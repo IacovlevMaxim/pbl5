@@ -3,6 +3,7 @@ import { useAuth } from '@/hooks/useAuth';
 import useInputField from '@/hooks/useInputField';
 import { Link } from 'expo-router';
 import { KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React from "react";
 
 const emailValidation = (value: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

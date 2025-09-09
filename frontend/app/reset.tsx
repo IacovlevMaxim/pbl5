@@ -4,15 +4,11 @@ import useInputField from '@/hooks/useInputField';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React from "react";
 
 const emailValidation = (value: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(value)) return "Enter a valid email address.";
-  return undefined;
-}
-
-const passwordValidation = (value: string) => {
-  if (value.length < 6) return "Password must be at least 6 characters.";
   return undefined;
 }
 

@@ -4,6 +4,7 @@ import useInputField from '@/hooks/useInputField';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React from "react";
 
 interface RegisterBody {
   [key: string]: string;

@@ -2,6 +2,7 @@ import Header from "@/components/HomeHeader";
 import { useAuth } from "@/hooks/useAuth";
 import { Link } from "expo-router";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React from "react";
 
 const styles = StyleSheet.create({
   container: {
