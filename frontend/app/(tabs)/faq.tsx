@@ -6,6 +6,16 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native";
+import Header from "@/components/HomeHeader";
+import { Alert } from "react-native";
+
+const handleSearchPress = () => {
+  Alert.alert("Search", "Search functionality coming soon!");
+};
+
+const handleNotificationPress = () => {
+  Alert.alert("Notifications", "Notification functionality coming soon!");
+};
 
 const faqData = [
   {
@@ -34,7 +44,12 @@ export default function FAQScreen() {
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <Text style={styles.header}>Frequently Asked Questions</Text>
+      <Header
+        userName="Mr. Williamson"
+        onSearchPress={handleSearchPress}
+        onNotificationPress={handleNotificationPress}
+      />
+      ;<Text style={styles.header}>Frequently Asked Questions</Text>
       {faqData.map((item, index) => (
         <View key={index} style={styles.item}>
           <TouchableOpacity onPress={() => toggleAccordion(index)}>
