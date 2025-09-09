@@ -1,5 +1,6 @@
 import { useRouter, useSegments } from 'expo-router';
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import React from 'react';
 
 // Define Auth context types
 type AuthContextType = {

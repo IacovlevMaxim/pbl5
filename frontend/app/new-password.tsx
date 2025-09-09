@@ -2,6 +2,8 @@ import InputField from '@/components/InputField';
 import { useAuth } from '@/hooks/useAuth';
 import useInputField from '@/hooks/useInputField';
 import { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React from "react";
+import { router } from 'expo-router';
 
 const passwordValidation = (value: string) => {
   if (value.length < 6) return "Password must be at least 6 characters.";
@@ -55,7 +57,9 @@ export default function Reset() {
     //     } 
     //   }).then(r => r.json());
 
-      auth?.signIn();
+      router.push('/activate');
+
+      // auth?.signIn();
       // Navigation is handled by the AuthProvider in _layout.tsx
     }
   };

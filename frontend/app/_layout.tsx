@@ -1,5 +1,6 @@
 import { AuthProvider } from "@/hooks/useAuth";
 import { Stack } from "expo-router";
+import React from "react";
 
 export default function RootLayout() {
   return (
@@ -10,6 +11,7 @@ export default function RootLayout() {
           <Stack.Screen name="register" />
           <Stack.Screen name="reset" />
           <Stack.Screen name="new-password" />
+          <Stack.Screen name="activate" />
       </Stack>
     </AuthProvider>
   );
