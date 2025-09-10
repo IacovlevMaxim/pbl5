@@ -10,6 +10,7 @@ import { Platform } from "react-native";
 import HomeScreen from "./(tabs)/index";
 import ProfileScreen from "./(tabs)/profile";
 import FAQScreen from "./(tabs)/faq";
+import MedicalHistoryView from "./(tabs)/medical-history";
 
 const handleSearchPress = () => {
   Alert.alert("Search", "Search functionality coming soon!");
@@ -67,6 +68,7 @@ export default function RootLayout() {
   let TabContent = null;
   if (pathname === "/(tabs)/home") TabContent = <HomeScreen />;
   else if (pathname === "/(tabs)/profile") TabContent = <ProfileScreen />;
+  else if (pathname === "/(tabs)/medical-history") TabContent = <MedicalHistoryView />;
   else if (pathname === "/(tabs)/faq") TabContent = <FAQScreen />;
 
   return (
