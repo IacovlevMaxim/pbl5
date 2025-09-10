@@ -8,7 +8,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import * as Linking from "expo-linking";
 import { Platform } from "react-native";
 import HomeScreen from "./(tabs)/index";
-import AboutScreen from "./(tabs)/about";
+import ProfileScreen from "./(tabs)/profile";
 import FAQScreen from "./(tabs)/faq";
 
 const handleSearchPress = () => {
@@ -66,7 +66,7 @@ export default function RootLayout() {
   // Render the correct tab page
   let TabContent = null;
   if (pathname === "/(tabs)/home") TabContent = <HomeScreen />;
-  else if (pathname === "/(tabs)/about") TabContent = <AboutScreen />;
+  else if (pathname === "/(tabs)/profile") TabContent = <ProfileScreen />;
   else if (pathname === "/(tabs)/faq") TabContent = <FAQScreen />;
 
   return (

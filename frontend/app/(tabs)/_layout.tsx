@@ -24,8 +24,8 @@ export default function TabLayout() {
         options={{ headerShown: false, tabBarLabel: "Home" }}
       />
       <Tabs.Screen
-        name="about"
-        options={{ headerShown: false, tabBarLabel: "About" }}
+        name="profile"
+        options={{ headerShown: false, tabBarLabel: "Profile" }}
       />
       <Tabs.Screen
         name="faq"
