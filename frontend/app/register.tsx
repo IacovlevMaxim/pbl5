@@ -1,36 +1,43 @@
-import InputField from '@/components/InputField';
-import { useAuth } from '@/hooks/useAuth';
-import useInputField from '@/hooks/useInputField';
-import RNDateTimePicker from '@react-native-community/datetimepicker';
-import { useState } from 'react';
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import InputField from "@/components/InputField";
+import { useAuth } from "@/hooks/useAuth";
+import useInputField from "@/hooks/useInputField";
+import RNDateTimePicker from "@react-native-community/datetimepicker";
+import { useState } from "react";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React from "react";
-
+import { Colors } from "@/constants/Colors";
 interface RegisterBody {
   [key: string]: string;
-  date_of_birth: string
+  date_of_birth: string;
 }
 
 const emailValidation = (value: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(value)) return "Enter a valid email address.";
   return undefined;
-}
+};
 
 const idnpValidation = (value: string) => {
   const idnpRegex = /^\d{13}$/; // Example: IDNP must be exactly 13 digits
   if (!idnpRegex.test(value)) return "IDNP must be exactly 13 digits.";
   return undefined;
-}
+};
 
 const passwordValidation = (value: string) => {
   if (value.length < 6) return "Password must be at least 6 characters.";
   return undefined;
-}
+};
 
 export default function Register() {
   const auth = useAuth();
-  const [date, setDate] = useState(new Date())
+  const [date, setDate] = useState(new Date());
   const nameField = useInputField({
     label: "Name",
     value: "",
@@ -59,7 +66,7 @@ export default function Register() {
   const fields = [nameField, idnpField, emailField, passwordField, streetField];
 
   const validateForm = () => {
-    for(const field of fields) {
+    for (const field of fields) {
       if (field.validationFn) {
         const error = field.validationFn(field.value);
         if (error) return false;
@@ -67,24 +74,27 @@ export default function Register() {
     }
 
     return true;
-  }
+  };
 
   const handleSubmit = async () => {
     if (validateForm()) {
       // In a real app, you would authenticate with a server here
 
       // body should be a JSON object with all the fields
-      const body: RegisterBody = fields.reduce((acc, field) => {
-        const key = field.label.toLowerCase().replace(/ /g, "_");
-        acc[key] = field.value;
-        return acc;
-      }, { date_of_birth: date.toISOString().split('T')[0] } as RegisterBody);
+      const body: RegisterBody = fields.reduce(
+        (acc, field) => {
+          const key = field.label.toLowerCase().replace(/ /g, "_");
+          acc[key] = field.value;
+          return acc;
+        },
+        { date_of_birth: date.toISOString().split("T")[0] } as RegisterBody
+      );
 
       // const res = await auth?.authFetch('/register', {
-      //   fetchParams: { 
+      //   fetchParams: {
       //     method: 'POST',
-      //     body: JSON.stringify(body) 
-      //   } 
+      //     body: JSON.stringify(body)
+      //   }
       // }).then(r => r.json());
 
       auth?.signIn();
@@ -93,25 +103,22 @@ export default function Register() {
   };
 
   return (
-    <KeyboardAvoidingView 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
       <View style={styles.innerContainer}>
         {fields.map((field, index) => (
-          <InputField 
-            key={index}
-            {...field}
-          />
+          <InputField key={index} {...field} />
         ))}
 
         <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>Date of Birth</Text>
 
-          {Platform.OS === 'web' ? (
+          {Platform.OS === "web" ? (
             <input
               type="date"
-              value={date.toISOString().split('T')[0]}
+              value={date.toISOString().split("T")[0]}
               onChange={(e) => {
                 const newDate = new Date(e.target.value);
                 setDate(newDate);
@@ -119,7 +126,7 @@ export default function Register() {
               style={styles.input as React.CSSProperties}
             />
           ) : (
-            <RNDateTimePicker 
+            <RNDateTimePicker
               value={date}
               mode="date"
               display="default"
@@ -131,8 +138,8 @@ export default function Register() {
           )}
         </View>
 
-        <TouchableOpacity 
-          style={styles.button} 
+        <TouchableOpacity
+          style={styles.button}
           onPress={handleSubmit}
           activeOpacity={0.8}
         >
@@ -146,55 +153,48 @@ export default function Register() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#25292e',
+    backgroundColor: Colors.light.background,
   },
   innerContainer: {
     flex: 1,
     padding: 20,
-    justifyContent: 'center',
-  },
-  header: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 40,
-    textAlign: 'center',
+    justifyContent: "center",
   },
   inputContainer: {
     marginBottom: 20,
   },
   inputLabel: {
-    color: '#fff',
+    color: "#fff",
     marginBottom: 8,
     fontSize: 16,
   },
   input: {
-    backgroundColor: '#333',
+    backgroundColor: Colors.light.text,
     borderRadius: 8,
     padding: 15,
-    color: '#fff',
+    color: "#888",
     fontSize: 16,
     borderWidth: 1,
-    borderColor: '#444',
+    borderColor: "white",
   },
   inputError: {
-    borderColor: '#ff4d4d',
+    borderColor: "#ff4d4d",
   },
   errorText: {
-    color: '#ff4d4d',
+    color: "#ff4d4d",
     marginTop: 5,
     fontSize: 14,
   },
   button: {
-    backgroundColor: '#7f58ff',
+    backgroundColor: Colors.light.text,
     borderRadius: 8,
     padding: 15,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 10,
   },
   buttonText: {
-    color: '#fff',
+    color: Colors.light.background,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });

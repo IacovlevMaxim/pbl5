@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import Header from "@/components/HomeHeader";
 import { Alert } from "react-native";
-
+import { Colors } from "@/constants/Colors";
 const handleSearchPress = () => {
   Alert.alert("Search", "Search functionality coming soon!");
 };
@@ -14,10 +14,12 @@ const handleNotificationPress = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#25292e",
+    backgroundColor: Colors.light.background,
   },
   text: {
-    color: "#fff",
+    color: Colors.light.text,
+    marginBottom: 20,
+    fontSize: 16,
   },
 });
 

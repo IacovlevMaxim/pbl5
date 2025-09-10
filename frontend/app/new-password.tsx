@@ -1,14 +1,22 @@
-import InputField from '@/components/InputField';
-import { useAuth } from '@/hooks/useAuth';
-import useInputField from '@/hooks/useInputField';
-import { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import InputField from "@/components/InputField";
+import { useAuth } from "@/hooks/useAuth";
+import useInputField from "@/hooks/useInputField";
+import {
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React from "react";
-import { router } from 'expo-router';
-
+import { router } from "expo-router";
+import { Colors } from "@/constants/Colors";
 const passwordValidation = (value: string) => {
   if (value.length < 6) return "Password must be at least 6 characters.";
   return undefined;
-}
+};
 
 export default function Reset() {
   const auth = useAuth();
@@ -17,18 +25,18 @@ export default function Reset() {
     value: "",
     secureTextEntry: true,
     validationFn: passwordValidation,
-  })
+  });
 
   const confirmPasswordField = useInputField({
     label: "Confirm Password",
     value: "",
     secureTextEntry: true,
     validationFn: passwordValidation,
-  })
+  });
 
   const validateForm = () => {
     const fields = [passwordField, confirmPasswordField];
-    for(const field of fields) {
+    for (const field of fields) {
       if (field.validationFn) {
         const error = field.validationFn(field.value);
         if (error) return false;
@@ -36,28 +44,28 @@ export default function Reset() {
     }
 
     if (passwordField.value !== confirmPasswordField.value) {
-        Alert.alert("Error", "Password should be identical.");
-        return false;
+      Alert.alert("Error", "Password should be identical.");
+      return false;
     }
 
     return true;
-  }
+  };
 
   const handleSubmit = async () => {
     console.log("auth", auth);
     if (validateForm()) {
       // In a real app, you would authenticate with a server here
 
-    //   const res = await auth?.authFetch('/reset', {
-    //     fetchParams: { 
-    //       method: 'POST',
-    //       body: JSON.stringify({ 
-    //         email: emailField.value
-    //       }) 
-    //     } 
-    //   }).then(r => r.json());
+      //   const res = await auth?.authFetch('/reset', {
+      //     fetchParams: {
+      //       method: 'POST',
+      //       body: JSON.stringify({
+      //         email: emailField.value
+      //       })
+      //     }
+      //   }).then(r => r.json());
 
-      router.push('/activate');
+      router.push("/activate");
 
       // auth?.signIn();
       // Navigation is handled by the AuthProvider in _layout.tsx
@@ -65,25 +73,28 @@ export default function Reset() {
   };
 
   return (
-    <KeyboardAvoidingView 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
       <View style={styles.innerContainer}>
-        <View style={{ marginBottom: 40, marginLeft: 10, marginRight: 10, alignContent: 'center' }}>
-            <Text style={styles.text}>Select a new password</Text>
+        <View
+          style={{
+            marginBottom: 40,
+            marginLeft: 10,
+            marginRight: 10,
+            alignContent: "center",
+          }}
+        >
+          <Text style={styles.text}>Select a new password</Text>
         </View>
 
-        <InputField 
-          {...passwordField}
-        />
+        <InputField {...passwordField} />
 
-        <InputField 
-          {...confirmPasswordField}
-        />     
+        <InputField {...confirmPasswordField} />
 
-        <TouchableOpacity 
-          style={styles.button} 
+        <TouchableOpacity
+          style={styles.button}
           onPress={handleSubmit}
           activeOpacity={0.8}
         >
@@ -97,72 +108,68 @@ export default function Reset() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#25292e',
+    backgroundColor: Colors.light.background,
   },
   innerContainer: {
     flex: 1,
     padding: 20,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   header: {
     fontSize: 28,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontWeight: "bold",
+    color: "#fff",
     marginBottom: 40,
-    textAlign: 'center',
+    textAlign: "center",
   },
   inputContainer: {
     marginBottom: 20,
   },
   inputLabel: {
-    color: '#fff',
+    color: "#fff",
     marginBottom: 8,
     fontSize: 16,
   },
   input: {
-    backgroundColor: '#333',
+    backgroundColor: "#333",
     borderRadius: 8,
     padding: 15,
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
     borderWidth: 1,
-    borderColor: '#444',
+    borderColor: Colors.light.button.secondary,
   },
   inputError: {
-    borderColor: '#ff4d4d',
+    borderColor: "#ff4d4d",
   },
   errorText: {
-    color: '#ff4d4d',
+    color: "#ff4d4d",
     marginTop: 5,
     fontSize: 14,
   },
   text: {
-    color: '#fff',
+    color: "#fff",
     marginBottom: 20,
     fontSize: 16,
-    textAlign: 'center',
-  },
-  link: {
-    color: '#7f58ff',
-    textDecorationLine: 'underline',
+    textAlign: "center",
   },
   button: {
-    backgroundColor: '#7f58ff',
+    backgroundColor: Colors.light.text,
     borderRadius: 8,
     padding: 15,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 10,
   },
   buttonDisabled: {
-    backgroundColor: 'gray',
+    backgroundColor: "gray",
     borderRadius: 8,
     padding: 15,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 10,
   },
   buttonText: {
-    color: '#fff',
+    color: Colors.light.background,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });

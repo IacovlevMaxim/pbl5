@@ -1,20 +1,27 @@
-import InputField from '@/components/InputField';
-import { useAuth } from '@/hooks/useAuth';
-import useInputField from '@/hooks/useInputField';
-import { Link } from 'expo-router';
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import InputField from "@/components/InputField";
+import { useAuth } from "@/hooks/useAuth";
+import useInputField from "@/hooks/useInputField";
+import { Link } from "expo-router";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React from "react";
-
+import { Colors } from "@/constants/Colors";
 const emailValidation = (value: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(value)) return "Enter a valid email address.";
   return undefined;
-}
+};
 
 const passwordValidation = (value: string) => {
   if (value.length < 6) return "Password must be at least 6 characters.";
   return undefined;
-}
+};
 
 export default function Login() {
   const auth = useAuth();
@@ -22,17 +29,17 @@ export default function Login() {
     label: "Email",
     value: "",
     validationFn: emailValidation,
-  })
+  });
   const passwordField = useInputField({
     label: "Password",
     value: "",
     secureTextEntry: true,
     validationFn: passwordValidation,
-  })
+  });
 
   const validateForm = () => {
     const fields = [emailField, passwordField];
-    for(const field of fields) {
+    for (const field of fields) {
       if (field.validationFn) {
         const error = field.validationFn(field.value);
         if (error) return false;
@@ -40,19 +47,19 @@ export default function Login() {
     }
 
     return true;
-  }
+  };
 
   const handleSubmit = async () => {
     if (validateForm()) {
       // In a real app, you would authenticate with a server here
 
       // const res = await auth?.authFetch('/login', {
-      //   fetchParams: { 
+      //   fetchParams: {
       //     method: 'POST',
-      //     body: JSON.stringify({ 
-      //       email: emailField.value, password: passwordField.value 
-      //     }) 
-      //   } 
+      //     body: JSON.stringify({
+      //       email: emailField.value, password: passwordField.value
+      //     })
+      //   }
       // }).then(r => r.json());
 
       auth?.signIn();
@@ -61,18 +68,14 @@ export default function Login() {
   };
 
   return (
-    <KeyboardAvoidingView 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
       <View style={styles.innerContainer}>
-        <InputField 
-          {...emailField}
-        />
+        <InputField {...emailField} />
 
-        <InputField 
-          {...passwordField}
-        />
+        <InputField {...passwordField} />
 
         <Link href="/register" style={styles.link}>
           <Text>Register</Text>
@@ -81,10 +84,9 @@ export default function Login() {
         <Link href="/reset" style={styles.link}>
           <Text>Forgot Password</Text>
         </Link>
-                
 
-        <TouchableOpacity 
-          style={styles.button} 
+        <TouchableOpacity
+          style={styles.button}
           onPress={handleSubmit}
           activeOpacity={0.8}
         >
@@ -98,59 +100,30 @@ export default function Login() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#25292e',
+    backgroundColor: Colors.light.background,
   },
   innerContainer: {
     flex: 1,
     padding: 20,
-    justifyContent: 'center',
-  },
-  header: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 40,
-    textAlign: 'center',
+    justifyContent: "center",
   },
   inputContainer: {
     marginBottom: 20,
   },
-  inputLabel: {
-    color: '#fff',
-    marginBottom: 8,
-    fontSize: 16,
-  },
-  input: {
-    backgroundColor: '#333',
-    borderRadius: 8,
-    padding: 15,
-    color: '#fff',
-    fontSize: 16,
-    borderWidth: 1,
-    borderColor: '#444',
-  },
-  inputError: {
-    borderColor: '#ff4d4d',
-  },
-  errorText: {
-    color: '#ff4d4d',
-    marginTop: 5,
-    fontSize: 14,
-  },
   link: {
-    color: '#7f58ff',
-    textDecorationLine: 'underline',
+    color: Colors.light.text,
+    textDecorationLine: "underline",
   },
   button: {
-    backgroundColor: '#7f58ff',
+    backgroundColor: Colors.light.text,
     borderRadius: 8,
     padding: 15,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 10,
   },
   buttonText: {
-    color: '#fff',
+    color: Colors.light.background,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });

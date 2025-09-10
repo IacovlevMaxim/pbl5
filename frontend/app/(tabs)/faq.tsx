@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import Header from "@/components/HomeHeader";
 import { Alert } from "react-native";
-
+import { Colors } from "@/constants/Colors";
 const handleSearchPress = () => {
   Alert.alert("Search", "Search functionality coming soon!");
 };
@@ -67,7 +67,7 @@ export default function FAQScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#25292e",
+    backgroundColor: Colors.light.background,
     padding: 20,
   },
   header: {
@@ -80,16 +80,16 @@ const styles = StyleSheet.create({
   item: {
     marginBottom: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#444",
+    borderBottomColor: Colors.light.text,
     paddingBottom: 8,
   },
   question: {
-    color: "#7f58ff",
+    color: Colors.light.text,
     fontSize: 18,
     fontWeight: "bold",
   },
   answer: {
-    color: "#fff",
+    color: Colors.light.text,
     fontSize: 16,
     marginTop: 8,
   },
