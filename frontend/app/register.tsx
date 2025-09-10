@@ -7,6 +7,7 @@ import {
   Alert, 
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
