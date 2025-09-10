@@ -121,7 +121,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const refreshAccessToken = async() => {
-    const res = await authFetch('/refresh', {
+    const res = await authFetch('/api/Auth/refresh', {
       fetchParams: { 
         method: 'POST',
         body: JSON.stringify({ 
