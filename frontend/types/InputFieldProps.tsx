@@ -1,5 +1,6 @@
 interface InputFieldProps {
     label: string;
+    field: string;
     value: string;
     required?: boolean;
     setValue: (text: string) => void;

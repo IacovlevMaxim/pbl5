@@ -3,7 +3,7 @@ import { useAuth } from '@/hooks/useAuth';
 import useInputField from '@/hooks/useInputField';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from "react";
 
 const emailValidation = (value: string) => {
@@ -18,6 +18,7 @@ export default function Reset() {
   const auth = useAuth();
   const emailField = useInputField({
     label: "Email",
+    field: "email",
     value: "",
     validationFn: emailValidation,
   });
@@ -49,7 +50,21 @@ export default function Reset() {
 
       setSentLink(true);
 
-      router.push('/new-password');
+      const res = await auth?.authFetch('/api/Auth/forgot-password', {
+        fetchParams: { 
+          method: 'POST',
+          body: JSON.stringify({ 
+            email: emailField.value
+          }) 
+        } 
+      });
+
+      if(res.status === 200) {
+        router.push('/new-password');
+      } else {
+        Alert.alert("Error", "There is no account with this email.");
+      }
+
 
     //   auth?.signIn();
       // Navigation is handled by the AuthProvider in _layout.tsx
