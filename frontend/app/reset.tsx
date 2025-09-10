@@ -2,8 +2,9 @@ import InputField from "@/components/InputField";
 import { useAuth } from "@/hooks/useAuth";
 import useInputField from "@/hooks/useInputField";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
+  Alert,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -11,8 +12,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
 import { Colors } from "@/constants/Colors";
+
 const emailValidation = (value: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(value)) return "Enter a valid email address.";
@@ -25,6 +26,7 @@ export default function Reset() {
   const auth = useAuth();
   const emailField = useInputField({
     label: "Email",
+    field: "email",
     value: "",
     validationFn: emailValidation,
   });
@@ -44,19 +46,20 @@ export default function Reset() {
   const handleSubmit = async () => {
     if (validateForm()) {
       // In a real app, you would authenticate with a server here
+      const res = await auth?.authFetch('/api/Auth/forgot-password', {
+        fetchParams: { 
+          method: 'POST',
+          body: JSON.stringify({ 
+            email: emailField.value
+          }) 
+        } 
+      });
 
-      //   const res = await auth?.authFetch('/reset', {
-      //     fetchParams: {
-      //       method: 'POST',
-      //       body: JSON.stringify({
-      //         email: emailField.value
-      //       })
-      //     }
-      //   }).then(r => r.json());
-
-      setSentLink(true);
-
-      router.push("/new-password");
+      if(res.status === 200) {
+        router.push('/new-password');
+      } else {
+        Alert.alert("Error", "There is no account with this email.");
+      }
 
       //   auth?.signIn();
       // Navigation is handled by the AuthProvider in _layout.tsx

@@ -1,8 +1,10 @@
 import { router } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
+
 import { Colors } from "@/constants/Colors";
-export default function ActivateScreen() {
+
+export default function Activate() {
   const handleGoToMainPage = () => {
     router.replace("/login");
   };

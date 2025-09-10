@@ -20,8 +20,10 @@ const passwordValidation = (value: string) => {
 
 export default function Reset() {
   const auth = useAuth();
+
   const passwordField = useInputField({
     label: "Password",
+    field: "password",
     value: "",
     secureTextEntry: true,
     validationFn: passwordValidation,
@@ -29,6 +31,7 @@ export default function Reset() {
 
   const confirmPasswordField = useInputField({
     label: "Confirm Password",
+    field: "confirmPassword",
     value: "",
     secureTextEntry: true,
     validationFn: passwordValidation,
@@ -55,17 +58,25 @@ export default function Reset() {
     console.log("auth", auth);
     if (validateForm()) {
       // In a real app, you would authenticate with a server here
+      const res = await auth?.authFetch('/api/Auth/reset-password', {
+        fetchParams: { 
+          method: 'POST',
+          body: JSON.stringify({ 
+            //Should get email from activate link
+            email: "",
+            //Should get token from activate link
+            token: "",
+            
+            newPassword: passwordField.value
+          }) 
+        } 
+      })//.then(r => r.json());
 
-      //   const res = await auth?.authFetch('/reset', {
-      //     fetchParams: {
-      //       method: 'POST',
-      //       body: JSON.stringify({
-      //         email: emailField.value
-      //       })
-      //     }
-      //   }).then(r => r.json());
-
-      router.push("/activate");
+      if(res.status === 200) {
+        router.push('/activate');
+      } else {
+        Alert.alert("Error", "Failed to reset password. Please try again.");
+      }
 
       // auth?.signIn();
       // Navigation is handled by the AuthProvider in _layout.tsx

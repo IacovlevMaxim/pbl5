@@ -3,6 +3,7 @@ import { useAuth } from "@/hooks/useAuth";
 import useInputField from "@/hooks/useInputField";
 import { Link } from "expo-router";
 import {
+  Alert,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -10,6 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
 import React from "react";
 import { Colors } from "@/constants/Colors";
 const emailValidation = (value: string) => {
@@ -27,11 +29,13 @@ export default function Login() {
   const auth = useAuth();
   const emailField = useInputField({
     label: "Email",
+    field: "email",
     value: "",
     validationFn: emailValidation,
   });
   const passwordField = useInputField({
     label: "Password",
+    field: "password",
     value: "",
     secureTextEntry: true,
     validationFn: passwordValidation,
@@ -52,20 +56,23 @@ export default function Login() {
   const handleSubmit = async () => {
     if (validateForm()) {
       // In a real app, you would authenticate with a server here
+      const res = await auth?.authFetch('/api/Auth/login', {
+        fetchParams: { 
+          method: 'POST',
+          body: JSON.stringify({ 
+            identifier: emailField.value, password: passwordField.value 
+          }) 
+        } 
+      });//.then(r => r.json());
 
-      // const res = await auth?.authFetch('/login', {
-      //   fetchParams: {
-      //     method: 'POST',
-      //     body: JSON.stringify({
-      //       email: emailField.value, password: passwordField.value
-      //     })
-      //   }
-      // }).then(r => r.json());
-
-      auth?.signIn();
-      // Navigation is handled by the AuthProvider in _layout.tsx
-    }
-  };
+      if(res.status === 200) {
+        auth?.signIn();
+        // Navigation is handled by the AuthProvider in _layout.tsx
+      } else {
+        Alert.alert("Error", "Invalid email or password.");
+      }
+    };
+  }
 
   return (
     <KeyboardAvoidingView
