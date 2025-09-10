@@ -3,7 +3,7 @@ import { useAuth } from '@/hooks/useAuth';
 import useInputField from '@/hooks/useInputField';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { useState } from 'react';
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from "react";
 
 interface RegisterBody {
@@ -33,26 +33,31 @@ export default function Register() {
   const [date, setDate] = useState(new Date())
   const nameField = useInputField({
     label: "Name",
+    field: "fullName",
     value: "",
   });
   const emailField = useInputField({
     label: "Email",
+    field: "email",
     value: "",
     validationFn: emailValidation,
   });
   const idnpField = useInputField({
     label: "IDNP",
+    field: "idnp",
     value: "",
     validationFn: idnpValidation,
   });
   const passwordField = useInputField({
     label: "Password",
+    field: "password",
     value: "",
     secureTextEntry: true,
     validationFn: passwordValidation,
   });
   const streetField = useInputField({
     label: "Street",
+    field: "street",
     value: "",
   });
 
@@ -75,20 +80,26 @@ export default function Register() {
 
       // body should be a JSON object with all the fields
       const body: RegisterBody = fields.reduce((acc, field) => {
-        const key = field.label.toLowerCase().replace(/ /g, "_");
-        acc[key] = field.value;
+        acc[field.field] = field.value;
         return acc;
-      }, { date_of_birth: date.toISOString().split('T')[0] } as RegisterBody);
+      }, { date_of_birth: date.toISOString().split('T')[0], username: emailField.value } as RegisterBody);
 
-      // const res = await auth?.authFetch('/register', {
-      //   fetchParams: { 
-      //     method: 'POST',
-      //     body: JSON.stringify(body) 
-      //   } 
-      // }).then(r => r.json());
+      console.log("Register body:", body);
 
-      auth?.signIn();
-      // Navigation is handled by the AuthProvider in _layout.tsx
+      const res = await auth?.authFetch('/api/Auth/register', {
+        fetchParams: { 
+          method: 'POST',
+          body: JSON.stringify(body) 
+        } 
+      });
+
+      console.log("Register response:", res);
+
+      if(res.status === 200) {
+        auth?.signIn();
+      } else {
+        Alert.alert("Failed to register", "Please try again later.");
+      }
     }
   };
 
@@ -97,7 +108,12 @@ export default function Register() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      <View style={styles.innerContainer}>
+      <ScrollView 
+        showsVerticalScrollIndicator={false} 
+        style={styles.innerContainer}
+        scrollEnabled
+        contentContainerStyle={styles.scrollContent}
+      >
         {fields.map((field, index) => (
           <InputField 
             key={index}
@@ -138,7 +154,7 @@ export default function Register() {
         >
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 }
@@ -151,7 +167,7 @@ const styles = StyleSheet.create({
   innerContainer: {
     flex: 1,
     padding: 20,
-    justifyContent: 'center',
+    // justifyContent: 'center',
   },
   header: {
     fontSize: 28,
@@ -197,4 +213,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: 20,
+  }
 });
