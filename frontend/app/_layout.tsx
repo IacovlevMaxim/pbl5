@@ -8,8 +8,11 @@ import { FontAwesome } from "@expo/vector-icons";
 import * as Linking from "expo-linking";
 import { Platform } from "react-native";
 import HomeScreen from "./(tabs)/index";
-import AboutScreen from "./(tabs)/about";
+import ProfileScreen from "./(tabs)/profile";
 import FAQScreen from "./(tabs)/faq";
+import MedicalHistoryView from "./(tabs)/medical-history";
+import LabResultsView from "./(tabs)/lab-results";
+import AppointmentsView from "./(tabs)/appointments";
 
 const handleSearchPress = () => {
   Alert.alert("Search", "Search functionality coming soon!");
@@ -66,8 +69,11 @@ export default function RootLayout() {
   // Render the correct tab page
   let TabContent = null;
   if (pathname === "/(tabs)/home") TabContent = <HomeScreen />;
-  else if (pathname === "/(tabs)/about") TabContent = <AboutScreen />;
+  else if (pathname === "/(tabs)/profile") TabContent = <ProfileScreen />;
+  else if (pathname === "/(tabs)/medical-history") TabContent = <MedicalHistoryView />;
+  else if (pathname === "/(tabs)/lab-results") TabContent = <LabResultsView />;
   else if (pathname === "/(tabs)/faq") TabContent = <FAQScreen />;
+  else if (pathname === "/(tabs)/appointments") TabContent = <AppointmentsView />;
 
   return (
     <AuthProvider>

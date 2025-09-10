@@ -23,9 +23,21 @@ export default function TabLayout() {
         name="index"
         options={{ headerShown: false, tabBarLabel: "Home" }}
       />
+      <Tabs.Screen 
+        name="medical-history"
+        options={{ headerShown: false, tabBarLabel: "History" }}
+      />
       <Tabs.Screen
-        name="about"
-        options={{ headerShown: false, tabBarLabel: "About" }}
+        name="lab-results"
+        options={{ headerShown: false, tabBarLabel: "Lab Results" }}
+      />
+      <Tabs.Screen
+        name="appointments"
+        options={{ headerShown: false, tabBarLabel: "Appointments" }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{ headerShown: false, tabBarLabel: "Profile" }}
       />
       <Tabs.Screen
         name="faq"
