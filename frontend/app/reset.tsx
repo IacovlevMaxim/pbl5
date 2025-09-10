@@ -1,19 +1,27 @@
-import InputField from '@/components/InputField';
-import { useAuth } from '@/hooks/useAuth';
-import useInputField from '@/hooks/useInputField';
-import { useRouter } from 'expo-router';
-import { useState } from 'react';
-import { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React from "react";
+import InputField from "@/components/InputField";
+import { useAuth } from "@/hooks/useAuth";
+import useInputField from "@/hooks/useInputField";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import {
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { Colors } from "@/constants/Colors";
 
 const emailValidation = (value: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(value)) return "Enter a valid email address.";
   return undefined;
-}
+};
 
 export default function Reset() {
-    const router = useRouter();
+  const router = useRouter();
   const [sentLink, setSentLink] = useState(false);
   const auth = useAuth();
   const emailField = useInputField({
@@ -25,7 +33,7 @@ export default function Reset() {
 
   const validateForm = () => {
     const fields = [emailField];
-    for(const field of fields) {
+    for (const field of fields) {
       if (field.validationFn) {
         const error = field.validationFn(field.value);
         if (error) return false;
@@ -33,23 +41,11 @@ export default function Reset() {
     }
 
     return true;
-  }
+  };
 
   const handleSubmit = async () => {
     if (validateForm()) {
       // In a real app, you would authenticate with a server here
-
-    //   const res = await auth?.authFetch('/reset', {
-    //     fetchParams: { 
-    //       method: 'POST',
-    //       body: JSON.stringify({ 
-    //         email: emailField.value
-    //       }) 
-    //     } 
-    //   }).then(r => r.json());
-
-      setSentLink(true);
-
       const res = await auth?.authFetch('/api/Auth/forgot-password', {
         fetchParams: { 
           method: 'POST',
@@ -65,32 +61,41 @@ export default function Reset() {
         Alert.alert("Error", "There is no account with this email.");
       }
 
-
-    //   auth?.signIn();
+      //   auth?.signIn();
       // Navigation is handled by the AuthProvider in _layout.tsx
     }
   };
 
   return (
-    <KeyboardAvoidingView 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
       <View style={styles.innerContainer}>
-        <View style={{ marginBottom: 40, marginLeft: 10, marginRight: 10, alignContent: 'center' }}>
-            <Text style={styles.text}>You will receive the link to reset your password at the email address provided.</Text>
+        <View
+          style={{
+            marginBottom: 40,
+            marginLeft: 10,
+            marginRight: 10,
+            alignContent: "center",
+          }}
+        >
+          <Text style={styles.text}>
+            You will receive the link to reset your password at the email
+            address provided.
+          </Text>
         </View>
 
-        <InputField 
-          {...emailField}
-        />     
+        <InputField {...emailField} />
 
         {sentLink && (
-            <Text style={[styles.text, { color: '#4BB543' }]}>Reset link sent! Please check your email.</Text>
-        )}  
+          <Text style={[styles.text, { color: "#4BB543" }]}>
+            Reset link sent! Please check your email.
+          </Text>
+        )}
 
-        <TouchableOpacity 
-          style={sentLink ? styles.buttonDisabled : styles.button} 
+        <TouchableOpacity
+          style={sentLink ? styles.buttonDisabled : styles.button}
           onPress={handleSubmit}
           activeOpacity={0.8}
           disabled={sentLink}
@@ -105,72 +110,72 @@ export default function Reset() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#25292e',
+    backgroundColor: Colors.light.background,
   },
   innerContainer: {
     flex: 1,
     padding: 20,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   header: {
     fontSize: 28,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontWeight: "bold",
+    color: "#fff",
     marginBottom: 40,
-    textAlign: 'center',
+    textAlign: "center",
   },
   inputContainer: {
     marginBottom: 20,
   },
   inputLabel: {
-    color: '#fff',
+    color: "#fff",
     marginBottom: 8,
     fontSize: 16,
   },
   input: {
-    backgroundColor: '#333',
+    backgroundColor: "#333",
     borderRadius: 8,
     padding: 15,
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
     borderWidth: 1,
-    borderColor: '#444',
+    borderColor: "#444",
   },
   inputError: {
-    borderColor: '#ff4d4d',
+    borderColor: "#ff4d4d",
   },
   errorText: {
-    color: '#ff4d4d',
+    color: "#ff4d4d",
     marginTop: 5,
     fontSize: 14,
   },
   text: {
-    color: '#fff',
+    color: "#fff",
     marginBottom: 20,
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
   },
   link: {
-    color: '#7f58ff',
-    textDecorationLine: 'underline',
+    color: "#7f58ff",
+    textDecorationLine: "underline",
   },
   button: {
-    backgroundColor: '#7f58ff',
+    backgroundColor: Colors.light.text,
     borderRadius: 8,
     padding: 15,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 10,
   },
   buttonDisabled: {
-    backgroundColor: 'gray',
+    backgroundColor: "gray",
     borderRadius: 8,
     padding: 15,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 10,
   },
   buttonText: {
-    color: '#fff',
+    color: Colors.light.background,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });

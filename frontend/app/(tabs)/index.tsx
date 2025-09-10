@@ -3,16 +3,16 @@ import { useAuth } from "@/hooks/useAuth";
 import { Link } from "expo-router";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
-
+import { Colors } from "@/constants/Colors";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#25292e",
+    backgroundColor: Colors.light.background,
     // justifyContent: "center",
     alignItems: "center",
   },
   text: {
-    color: "#fff",
+    color: Colors.light.text,
     marginBottom: 20,
     fontSize: 16,
   },
@@ -20,14 +20,14 @@ const styles = StyleSheet.create({
     // marginTop: 15,
   },
   button: {
-    backgroundColor: "#7f58ff",
+    backgroundColor: Colors.light.button.primary,
     borderRadius: 8,
     padding: 12,
     alignItems: "center",
     marginTop: 20,
   },
   buttonText: {
-    color: "#fff",
+    color: Colors.light.button.secondary,
     fontSize: 16,
     fontWeight: "bold",
   },

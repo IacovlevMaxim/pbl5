@@ -2,6 +2,8 @@ import { router } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 
+import { Colors } from "@/constants/Colors";
+
 export default function Activate() {
   const handleGoToMainPage = () => {
     router.replace("/login");
@@ -12,15 +14,13 @@ export default function Activate() {
       <View style={styles.checkmarkContainer}>
         <Text style={styles.checkmark}>✓</Text>
       </View>
-      
+
       <Text style={styles.title}>Account Activated</Text>
-      
-      <Text style={styles.subtitle}>
-        You can now go to main page
-      </Text>
-      
-      <TouchableOpacity 
-        style={styles.button} 
+
+      <Text style={styles.subtitle}>You can now go to main page</Text>
+
+      <TouchableOpacity
+        style={styles.button}
         onPress={handleGoToMainPage}
         activeOpacity={0.8}
       >
@@ -33,7 +33,7 @@ export default function Activate() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#25292e',
+    backgroundColor: Colors.light.background,
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
@@ -42,41 +42,41 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 60,
-    backgroundColor: '#4CAF50',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#4CAF50",
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 40,
   },
   checkmark: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 60,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   title: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 16,
-    textAlign: 'center',
+    textAlign: "center",
   },
   subtitle: {
-    color: '#ccc',
+    color: "#ccc",
     fontSize: 16,
     marginBottom: 40,
-    textAlign: 'center',
+    textAlign: "center",
     lineHeight: 24,
   },
   button: {
-    backgroundColor: '#7f58ff',
+    backgroundColor: Colors.light.button.primary,
     borderRadius: 8,
     paddingVertical: 16,
     paddingHorizontal: 32,
-    alignItems: 'center',
+    alignItems: "center",
     minWidth: 200,
   },
   buttonText: {
-    color: '#fff',
+    color: Colors.light.background,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
