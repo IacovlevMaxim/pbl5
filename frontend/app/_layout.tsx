@@ -11,6 +11,7 @@ import HomeScreen from "./(tabs)/index";
 import ProfileScreen from "./(tabs)/profile";
 import FAQScreen from "./(tabs)/faq";
 import MedicalHistoryView from "./(tabs)/medical-history";
+import LabResultsView from "./(tabs)/lab-results";
 
 const handleSearchPress = () => {
   Alert.alert("Search", "Search functionality coming soon!");
@@ -69,6 +70,7 @@ export default function RootLayout() {
   if (pathname === "/(tabs)/home") TabContent = <HomeScreen />;
   else if (pathname === "/(tabs)/profile") TabContent = <ProfileScreen />;
   else if (pathname === "/(tabs)/medical-history") TabContent = <MedicalHistoryView />;
+  else if (pathname === "/(tabs)/lab-results") TabContent = <LabResultsView />;
   else if (pathname === "/(tabs)/faq") TabContent = <FAQScreen />;
 
   return (

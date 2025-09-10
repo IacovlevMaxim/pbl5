@@ -28,6 +28,10 @@ export default function TabLayout() {
         options={{ headerShown: false, tabBarLabel: "History" }}
       />
       <Tabs.Screen
+        name="lab-results"
+        options={{ headerShown: false, tabBarLabel: "Lab Results" }}
+      />
+      <Tabs.Screen  
         name="profile"
         options={{ headerShown: false, tabBarLabel: "Profile" }}
       />
