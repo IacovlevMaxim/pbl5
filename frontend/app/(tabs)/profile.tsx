@@ -7,8 +7,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function ProfileView() {
+  const auth = useAuth();
   const patientInfo = {
     name: "John Anderson",
     dateOfBirth: "1985-03-15",
@@ -193,6 +195,7 @@ export default function ProfileView() {
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.actionButton, { borderColor: "#E53935" }]}
+          onPress={() => auth?.signOut()}
         >
           <Feather
             name="log-out"
