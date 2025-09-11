@@ -4,7 +4,7 @@ import useInputField from "@/hooks/useInputField";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import React, { useState } from "react";
 import {
-  Alert, 
+  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -86,23 +86,29 @@ export default function Register() {
   const handleSubmit = async () => {
     if (validateForm()) {
       // In a real app, you would authenticate with a server here
-      const body: RegisterBody = fields.reduce((acc, field) => {
-        acc[field.field] = field.value;
-        return acc;
-      }, { date_of_birth: date.toISOString().split('T')[0], username: emailField.value } as RegisterBody);
+      const body: RegisterBody = fields.reduce(
+        (acc, field) => {
+          acc[field.field] = field.value;
+          return acc;
+        },
+        {
+          date_of_birth: date.toISOString().split("T")[0],
+          username: emailField.value,
+        } as RegisterBody
+      );
 
       console.log("Register body:", body);
 
-      const res = await auth?.authFetch('/api/Auth/register', {
-        fetchParams: { 
-          method: 'POST',
-          body: JSON.stringify(body) 
-        } 
+      const res = await auth?.authFetch("/api/Auth/register", {
+        fetchParams: {
+          method: "POST",
+          body: JSON.stringify(body),
+        },
       });
 
       console.log("Register response:", res);
 
-      if(res.status === 200) {
+      if (res.status === 200) {
         auth?.signIn();
       } else {
         Alert.alert("Failed to register", "Please try again later.");
@@ -115,8 +121,8 @@ export default function Register() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
-      <ScrollView 
-        showsVerticalScrollIndicator={false} 
+      <ScrollView
+        showsVerticalScrollIndicator={false}
         style={styles.innerContainer}
         scrollEnabled
         contentContainerStyle={styles.scrollContent}
@@ -171,7 +177,6 @@ const styles = StyleSheet.create({
   innerContainer: {
     flex: 1,
     padding: 20,
-    justifyContent: "center",
   },
   inputContainer: {
     marginBottom: 20,
@@ -213,5 +218,5 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
     paddingBottom: 20,
-  }
+  },
 });
