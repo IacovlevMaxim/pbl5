@@ -1,9 +1,8 @@
 import InputField from "@/components/InputField";
-import { useAuth } from "@/hooks/useAuth";
+import { useLoginMutation } from "@/hooks/authMutationHooks";
 import useInputField from "@/hooks/useInputField";
 import { Link } from "expo-router";
 import {
-  Alert,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -26,7 +25,7 @@ const passwordValidation = (value: string) => {
 };
 
 export default function Login() {
-  const auth = useAuth();
+  const loginMutation = useLoginMutation();
   const emailField = useInputField({
     label: "Email",
     field: "email",
@@ -55,24 +54,12 @@ export default function Login() {
 
   const handleSubmit = async () => {
     if (validateForm()) {
-      // In a real app, you would authenticate with a server here
-      const res = await auth?.authFetch('/api/Auth/login', {
-        fetchParams: { 
-          method: 'POST',
-          body: JSON.stringify({ 
-            identifier: emailField.value, password: passwordField.value 
-          }) 
-        } 
-      });//.then(r => r.json());
-
-      if(res.status === 200) {
-        auth?.signIn();
-        // Navigation is handled by the AuthProvider in _layout.tsx
-      } else {
-        Alert.alert("Error", "Invalid email or password.");
-      }
-    };
-  }
+      loginMutation.mutate({
+        identifier: emailField.value,
+        password: passwordField.value
+      });
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -96,8 +83,11 @@ export default function Login() {
           style={styles.button}
           onPress={handleSubmit}
           activeOpacity={0.8}
+          disabled={loginMutation.isPending}
         >
-          <Text style={styles.buttonText}>Sign In</Text>
+          <Text style={styles.buttonText}>
+            {loginMutation.isPending ? "Signing In..." : "Sign In"}
+          </Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>

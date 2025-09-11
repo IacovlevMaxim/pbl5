@@ -1,10 +1,9 @@
 import InputField from "@/components/InputField";
-import { useAuth } from "@/hooks/useAuth";
+import { useForgotPasswordMutation } from "@/hooks/authMutationHooks";
 import useInputField from "@/hooks/useInputField";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
-  Alert,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -23,7 +22,7 @@ const emailValidation = (value: string) => {
 export default function Reset() {
   const router = useRouter();
   const [sentLink, setSentLink] = useState(false);
-  const auth = useAuth();
+  const forgotPasswordMutation = useForgotPasswordMutation();
   const emailField = useInputField({
     label: "Email",
     field: "email",
@@ -45,24 +44,12 @@ export default function Reset() {
 
   const handleSubmit = async () => {
     if (validateForm()) {
-      // In a real app, you would authenticate with a server here
-      const res = await auth?.authFetch('/api/Auth/forgot-password', {
-        fetchParams: { 
-          method: 'POST',
-          body: JSON.stringify({ 
-            email: emailField.value
-          }) 
-        } 
+      forgotPasswordMutation.mutate(emailField.value, {
+        onSuccess: () => {
+          setSentLink(true);
+          router.push('/new-password');
+        }
       });
-
-      if(res.status === 200) {
-        router.push('/new-password');
-      } else {
-        Alert.alert("Error", "There is no account with this email.");
-      }
-
-      //   auth?.signIn();
-      // Navigation is handled by the AuthProvider in _layout.tsx
     }
   };
 
@@ -98,9 +85,11 @@ export default function Reset() {
           style={sentLink ? styles.buttonDisabled : styles.button}
           onPress={handleSubmit}
           activeOpacity={0.8}
-          disabled={sentLink}
+          disabled={sentLink || forgotPasswordMutation.isPending}
         >
-          <Text style={styles.buttonText}>Send Reset Link</Text>
+          <Text style={styles.buttonText}>
+            {forgotPasswordMutation.isPending ? "Sending..." : "Send Reset Link"}
+          </Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
