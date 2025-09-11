@@ -1,5 +1,6 @@
 import { useRouter, useSegments } from 'expo-router';
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 // Define Auth context types
@@ -28,6 +29,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   const [authenticated, setAuthenticated] = useState<boolean | null>(null);
   const segments = useSegments();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   // Check if user is authenticated whenever the segments change
   useEffect(() => {
@@ -133,6 +135,8 @@ function AuthProvider({ children }: { children: ReactNode }) {
     
     //Save res.accessToken to storage/cookie
     //Set expiration date to res.accessTokenExpiresAt
+
+    queryClient.invalidateQueries({ queryKey: ['auth'] });
     // return res;
   }
 
@@ -140,7 +144,10 @@ function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider 
       value={{ 
         signIn: () => setAuthenticated(true),
-        signOut: () => setAuthenticated(false),
+        signOut: () => {
+          setAuthenticated(false)
+          queryClient.clear();
+        },
         authenticated: !!authenticated,
         refreshAccessToken,
         authFetch

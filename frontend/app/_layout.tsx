@@ -13,6 +13,7 @@ import FAQScreen from "./(tabs)/faq";
 import MedicalHistoryView from "./(tabs)/medical-history";
 import LabResultsView from "./(tabs)/lab-results";
 import AppointmentsView from "./(tabs)/appointments";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const handleSearchPress = () => {
   Alert.alert("Search", "Search functionality coming soon!");
@@ -60,6 +61,15 @@ function Footer() {
   );
 }
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    },
+  },
+});
+
 export default function RootLayout() {
   const pathname = usePathname();
 
@@ -76,27 +86,29 @@ export default function RootLayout() {
   else if (pathname === "/(tabs)/appointments") TabContent = <AppointmentsView />;
 
   return (
-    <AuthProvider>
-      <View style={styles.container}>
-        {isTabs ? (
-          <Header
-            userName="Mr. Williamson"
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <View style={styles.container}>
+          {isTabs ? (
+            <Header
+              userName="Mr. Williamson"
             onSearchPress={handleSearchPress}
             onNotificationPress={handleNotificationPress}
           />
-        ) : (
-          <Stack screenOptions={{ headerShown: true }}>
-            <Stack.Screen name="(tabs)" />
-            <Stack.Screen name="login" />
-            <Stack.Screen name="register" />
-            <Stack.Screen name="reset" />
-            <Stack.Screen name="new-password" />
-            <Stack.Screen name="activate" />
-          </Stack>
-        )}
-        <Footer />
-      </View>
-    </AuthProvider>
+          ) : (
+            <Stack screenOptions={{ headerShown: true }}>
+              <Stack.Screen name="(tabs)" />
+              <Stack.Screen name="login" />
+              <Stack.Screen name="register" />
+              <Stack.Screen name="reset" />
+              <Stack.Screen name="new-password" />
+              <Stack.Screen name="activate" />
+            </Stack>
+          )}
+          <Footer />
+        </View>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 

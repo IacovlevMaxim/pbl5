@@ -1,5 +1,5 @@
 import InputField from "@/components/InputField";
-import { useAuth } from "@/hooks/useAuth";
+import { useResetPasswordMutation } from "@/hooks/authMutationHooks";
 import useInputField from "@/hooks/useInputField";
 import {
   Alert,
@@ -19,7 +19,7 @@ const passwordValidation = (value: string) => {
 };
 
 export default function Reset() {
-  const auth = useAuth();
+  const resetPasswordMutation = useResetPasswordMutation();
 
   const passwordField = useInputField({
     label: "Password",
@@ -55,31 +55,15 @@ export default function Reset() {
   };
 
   const handleSubmit = async () => {
-    console.log("auth", auth);
     if (validateForm()) {
-      // In a real app, you would authenticate with a server here
-      const res = await auth?.authFetch('/api/Auth/reset-password', {
-        fetchParams: { 
-          method: 'POST',
-          body: JSON.stringify({ 
-            //Should get email from activate link
-            email: "",
-            //Should get token from activate link
-            token: "",
-            
-            newPassword: passwordField.value
-          }) 
-        } 
-      })//.then(r => r.json());
-
-      if(res.status === 200) {
-        router.push('/activate');
-      } else {
-        Alert.alert("Error", "Failed to reset password. Please try again.");
-      }
-
-      // auth?.signIn();
-      // Navigation is handled by the AuthProvider in _layout.tsx
+      resetPasswordMutation.mutate({
+        token: "", // Should get token from activate link
+        password: passwordField.value
+      }, {
+        onSuccess: () => {
+          router.push('/activate');
+        }
+      });
     }
   };
 
@@ -108,8 +92,11 @@ export default function Reset() {
           style={styles.button}
           onPress={handleSubmit}
           activeOpacity={0.8}
+          disabled={resetPasswordMutation.isPending}
         >
-          <Text style={styles.buttonText}>Send Reset Link</Text>
+          <Text style={styles.buttonText}>
+            {resetPasswordMutation.isPending ? "Resetting..." : "Reset Password"}
+          </Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
